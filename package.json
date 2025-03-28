@@ -1,0 +1,22 @@
+{
+  "name": "ecommerce-study",
+  "version": "1.0.0",
+  "description": "ecommerce study",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "HHQ",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongoose": "^8.12.2"
+  },
+  "devDependencies": {
+    "compression": "^1.8.0",
+    "dotenv": "^16.4.7",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0"
+  }
+}
