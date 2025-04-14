@@ -11,6 +11,9 @@ app.use(morgan('dev'));
 app.use(compression());
 app.use(helmet());
 
+// routes
+app.use('/api', require('./routes'));
+
 // init mongo
 require('./db/init.mongo');
 
