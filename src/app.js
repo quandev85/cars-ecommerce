@@ -10,6 +10,7 @@ const helmet = require('helmet');
 app.use(morgan('dev'));
 app.use(compression());
 app.use(helmet());
+app.use(express.json());
 
 // routes
 app.use('/api', require('./routes'));
