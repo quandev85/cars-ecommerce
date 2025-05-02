@@ -1,13 +1,11 @@
 const JWT = require('jsonwebtoken');
 const createTokenPair = async (payload, publicKey, privateKey) => {
   try {
-    const accessToken = JWT.sign(payload, privateKey, {
-      algorithm: 'RS256',
+    const accessToken = JWT.sign(payload, publicKey, {
       expiresIn: '1h',
     });
 
     const refreshToken = JWT.sign(payload, privateKey, {
-      algorithm: 'RS256',
       expiresIn: '30d',
     });
 

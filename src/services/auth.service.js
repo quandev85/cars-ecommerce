@@ -9,9 +9,7 @@ const { getInfoData } = require('../utils');
 class AuthService {
   static register = async ({ name, email, password }) => {
     try {
-      console.log(name, email, password);
       const userExist = await userModel.findOne({ email }).lean();
-      console.log(userExist);
       if (userExist) {
         return {
           code: '0000',
@@ -30,41 +28,39 @@ class AuthService {
 
       if (newUser) {
         // create private key, public key
-        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-          modulusLength: 2048,
-          publicKeyEncoding: {
-            type: 'pkcs1',
-            format: 'pem',
-          },
-          privateKeyEncoding: {
-            type: 'pkcs1',
-            format: 'pem',
-          },
-        });
+        // const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+        //   modulusLength: 2048,
+        //   publicKeyEncoding: {
+        //     type: 'pkcs1',
+        //     format: 'pem',
+        //   },
+        //   privateKeyEncoding: {
+        //     type: 'pkcs1',
+        //     format: 'pem',
+        //   },
+        // });
 
-        console.log(privateKey, publicKey);
+        const publicKey = crypto.randomBytes(64).toString('hex');
+        const privateKey = crypto.randomBytes(64).toString('hex');
 
-        const publicKeyString = await keyTokenService.createKeyToken({
+        const keyStore = await keyTokenService.createKeyToken({
           userId: newUser._id,
           publicKey,
+          privateKey,
         });
 
-        if (!publicKeyString) {
+        if (!keyStore) {
           return {
             code: '0001',
-            message: 'PublicKeyString error',
+            message: 'keyStore error',
           };
         }
 
-        const publicKeyObject = crypto.createPublicKey(publicKeyString);
-
         const tokens = await createTokenPair(
           { userId: newUser._id, email },
-          publicKeyObject,
+          publicKey,
           privateKey
         );
-
-        console.log(`Created token success for user: ${tokens}`);
 
         return {
           code: 201,
